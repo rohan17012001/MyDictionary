@@ -1,11 +1,42 @@
 const res=document.getElementById("result");
 const sound=document.getElementById("sound");
 const btn=document.getElementById("searchbtn");
-btn.addEventListener("click", ()=>{
+btn.addEventListener("click", async ()=>{
     let ip=document.getElementById("searchit").value;
-    let url="https://api.dictionaryapi.dev/api/v2/entries/en_US/${ip}";
-    console.log(ip);
-    fetch(url)
-        .then((res) => res.json())
-        .then((result) => console.log(result));
+    let url=`https://dictionaryapi.com/api/v3/references/collegiate/json/${ip}?key=eb8beaf2-0d05-4cab-9310-aca1e8ceb569`;
+    //console.log(ip);
+    await fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            let audio = `${data[0].hwi.prs[0].sound.audio}`;
+            let subdirectory = "";
+            if (audio.startsWith("bix")) subdirectory = "bix";
+            else if (audio.startsWith("gg")) subdirectory = "gg";
+            else if (!!audio.match(/^[.,:!?]/) || !!audio.match(/^[0-9]/))
+            subdirectory = "number";
+            else subdirectory = audio[0];
+            sound.setAttribute("src", `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subdirectory}/${audio}.mp3`);
+            console.log(sound);
+            result.innerHTML = `
+            <div class="soln">
+                <h3>${ip}</h3>
+                <button onclick="playitup"><i class="fa-solid fa-volume-high"></i></button>
+            </div>
+            <div class="detail">
+                <p>${data[0].fl}</p>
+                <p>/${data[0].hwi.prs[0].mw}/</p>
+            </div>
+            <div class="meaning">
+                ${data[0].shortdef[0]}
+            </div>
+            <div class="example">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt omnis, aspernatur ad explicabo vel
+                non ut veritatis assumenda cupiditate vero earum nesciunt officiis officia illo praesentium qui placeat
+                iure? Inventore.
+            </div>`;
+        });
 });
+function playitup(){
+    sound.play();
+}
