@@ -9,6 +9,18 @@ btn.addEventListener("click", async ()=>{
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
+            result.innerHTML = `
+            <div class="soln">
+                <h3>${ip}</h3>
+                <button onclick="playSound()"><i class="fa-solid fa-volume-high"></i></button>
+            </div>
+            <div class="detail">
+                <p>${data[0].fl}</p>
+                <p>/${data[0].hwi.prs[0].mw}/</p>
+            </div>
+            <div class="meaning">
+                ${data[0].shortdef[0]}
+            </div>`;
             let audio = `${data[0].hwi.prs[0].sound.audio}`;
             let subdirectory = "";
             if (audio.startsWith("bix")) subdirectory = "bix";
@@ -18,25 +30,12 @@ btn.addEventListener("click", async ()=>{
             else subdirectory = audio[0];
             sound.setAttribute("src", `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subdirectory}/${audio}.mp3`);
             console.log(sound);
-            result.innerHTML = `
-            <div class="soln">
-                <h3>${ip}</h3>
-                <button onclick="playitup"><i class="fa-solid fa-volume-high"></i></button>
-            </div>
-            <div class="detail">
-                <p>${data[0].fl}</p>
-                <p>/${data[0].hwi.prs[0].mw}/</p>
-            </div>
-            <div class="meaning">
-                ${data[0].shortdef[0]}
-            </div>
-            <div class="example">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt omnis, aspernatur ad explicabo vel
-                non ut veritatis assumenda cupiditate vero earum nesciunt officiis officia illo praesentium qui placeat
-                iure? Inventore.
-            </div>`;
-        });
+        })
+        .catch(() => {
+            result.innerHTML=`<h4 class="error" style="color: red;">Couldn't find the word you were looking for. <br>Please recheck for any spelling errors, and try again.</h4>`
+        }
+        )
 });
-function playitup(){
+function playSound(){
     sound.play();
 }
