@@ -10,6 +10,8 @@ html,body{
     font-size: 25px;
     font-family: 'Barlow', sans-serif;
     width: 100%;
+    position: sticky;
+    margin-bottom: 10px;
 }
 .heading h1{
     color: white;
@@ -28,10 +30,10 @@ html,body{
 .container{
     background-color: white;
     width: 80vmin;
-    position: absolute;
+    /*position: absolute;
     transform: translate(-50%, -50%);
     top: 50%;
-    left: 50%;
+    left: 50%;*/
     padding: 60px;
     border-radius: 8px;
     box-shadow: 0 20px 40px rgba(44, 65, 77, 0.4, 2);
@@ -96,6 +98,9 @@ html,body{
 }
 .result .meaning{
     color: #026dab;
+    border-left: 5px solid #a4d1eb;
+    margin-top: 20px;
+    padding-left: 15px;
 }
 .result .example{
     color: #026dab;
@@ -103,4 +108,17 @@ html,body{
     border-left: 5px solid #a4d1eb;
     margin-top: 20px;
     padding-left: 15px;
+}
+@media only screen and (min-width: 768px){
+    .container{
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+    }
+}
+@media only screen and(max-width: 767px){
+    .container{
+        margin-bottom: 20px;
+    }
 }
